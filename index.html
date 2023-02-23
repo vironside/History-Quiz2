@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>History Quiz</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body background="h5.jpg">
+    <div id="questionsContainer">
+        <h2 id="question"></h2>
+        <div id="answerContainer"></div>
+        <button onclick="nextQuestion()">Next</button>
+        
+    </div>
+    <h1>Correct answers <span id="correctCount"></span></h1>
+    <script>
+        const questions = [
+           {
+                question: "In which year did Davit Builder(Agmashenebeli) become king?",
+                answers: ['1089', '1085', '1100', '1090'],
+                correctAnswerIndex: 0,
+            },
+            {   
+                question: "In which year did the Battle of Shamkhori take place?",
+                answers: ['1200', '1155', '1195', '1197'],
+                correctAnswerIndex: 2,
+            },
+               {
+                question: "When was the Treaty of Georgievsky signed between the Russian Empire and the Kingdom of Kartli-Kakheti?",
+                answers: ['1770', '1780', '1788', '1783'],
+                correctAnswerIndex: 3,
+               },
+            {
+                question: "In which year was Christianity declared the state religion in Kartli (Iberia)?",
+                answers: ['330', '326', '325', '338'],
+                correctAnswerIndex: 1,
+            },
+             {
+                question: "In which year the independence of the Democratic Republic of Georgia was declared?",
+                answers: ['1918', '1920', '1927', '1930'],
+                correctAnswerIndex: 0,
+             },
+             {
+                question: "In which year did the Battle of basiani take place?",
+                answers: ['1200', '1202', '1205', '1205'],
+                correctAnswerIndex: 1,
+             },
+            
+             
+        ];
+
+        const questionText = document.getElementById('question');
+        const answerContainer = document.getElementById('answerContainer');
+        const correctAnswerIndicator = document.getElementById('correctCount');
+        const questionsContainer = document.getElementById('questionsContainer');
+
+        let correctAnswerCount = 0;
+        let currentQuestionIndex = 0;
+
+        function renderQuestion(index) {
+            if(index >= questions.length){
+                questionsContainer.innerHTML = '<h1> The End </h1>';
+                return;
+            }
+            questionText.innerHTML = questions[index].question;
+            let inputsText = '';
+            for( let answerIndex in questions[index].answers) {
+                const radioinputHTML = `<input type="radio" name="answer" class="answerInput" value="${answerIndex}"/> 
+                                        <label>${questions[index].answers[answerIndex]}</label>`;
+                inputsText = `${inputsText}${radioinputHTML}`;
+            }
+            answerContainer.innerHTML = inputsText;
+        }
+
+        function checkAnswer(){
+            const answerElements = document.getElementsByClassName('answerInput');
+            for(const element of answerElements){
+                if(element.checked) {
+                    const userChoice = Number(element.value);
+                    const correctAnswer = questions[currentQuestionIndex].correctAnswerIndex;
+                    if(userChoice === correctAnswer) {
+                        correctAnswerCount++;
+                    }
+                }
+            }
+            correctAnswerIndicator.innerHTML = `${correctAnswerCount} of ${questions.length}`
+        }
+
+        function nextQuestion(){
+            checkAnswer();
+            currentQuestionIndex = currentQuestionIndex + 1;
+            renderQuestion(currentQuestionIndex);
+        }
+
+        renderQuestion(currentQuestionIndex);
+    </script>
+</body>
+</html>
